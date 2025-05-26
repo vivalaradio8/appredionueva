@@ -1,0 +1,388 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivva la Radio - Player</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7F00FF"> 
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-image: url('https://i.ibb.co/chv25c9X/Dise-o-sin-t-tulo-3.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #000000; 
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; 
+        }
+
+        .player-container {
+            background-color: rgba(10, 10, 10, 0.75); 
+            padding: 25px 35px;
+            border-radius: 20px; 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(127, 0, 255, 0.4); 
+            text-align: center;
+            width: 90%;
+            max-width: 400px; 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(127, 0, 255, 0.3); 
+        }
+
+        .station-info h1 {
+            font-size: 2em; 
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #FFFFFF; 
+        }
+
+        .station-info p {
+            font-size: 1.1em; 
+            margin-bottom: 25px;
+            color: #dddddd; 
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            margin-bottom: 30px;
+            gap: 25px; 
+        }
+
+        .play-pause-btn {
+            background-color: #7F00FF; 
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 75px; 
+            height: 75px;
+            font-size: 30px; 
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(127, 0, 255, 0.5); 
+        }
+
+        .play-pause-btn:hover {
+            background-color: #6A0DAD; 
+            transform: scale(1.05);
+        }
+        .play-pause-btn:active {
+            transform: scale(0.95);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            flex-grow: 1;
+            max-width: 200px; 
+        }
+
+        .volume-control i {
+            font-size: 1.3em; 
+            color: #cccccc;
+        }
+        
+        .volume-control input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px; 
+            background: #333; 
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .volume-control input[type="range"]:hover {
+             background: #444;
+        }
+
+        .volume-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px; 
+            height: 20px;
+            background: #7F00FF; 
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #FFF; 
+            box-shadow: 0 0 5px rgba(127, 0, 255, 0.7);
+        }
+
+        .volume-control input[type="range"]::-moz-range-thumb {
+            width: 20px; 
+            height: 20px;
+            background: #7F00FF; 
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #FFF; 
+            box-shadow: 0 0 5px rgba(127, 0, 255, 0.7);
+        }
+        
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: #7F00FF; 
+            color: white;
+            padding: 12px 22px; 
+            border-radius: 30px; 
+            text-decoration: none;
+            font-size: 1.15em; 
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(127, 0, 255, 0.4);
+        }
+
+        .whatsapp-link i {
+            margin-right: 12px; 
+            font-size: 1.6em; 
+        }
+
+        .whatsapp-link:hover {
+            background-color: #6A0DAD; 
+            transform: scale(1.03);
+        }
+
+        /* For PWA installation prompt */
+        #installInstructions {
+            font-size: 0.85em; 
+            color: #bbbbbb; 
+            margin-top: 20px;
+        }
+
+        /* Loading animation (optional, but nice for "modern") */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(127, 0, 255, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(127, 0, 255, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(127, 0, 255, 0.5); }
+        }
+        .loading-state .play-pause-btn {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    
+.logo-central {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #7F00FF;
+    margin: 15px auto;
+    box-shadow: 0 0 10px rgba(127, 0, 255, 0.6);
+}
+
+.social-sidebar {
+    position: fixed;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.social-sidebar a {
+    background-color: #7F00FF;
+    color: white;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 1.3em;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 8px rgba(127, 0, 255, 0.4);
+}
+
+.social-sidebar a:hover {
+    background-color: #6A0DAD;
+    transform: scale(1.1);
+}
+
+</style>
+</head>
+<body>
+    <div class="player-container">
+        <div class="station-info">
+            <img class="logo-central" src="https://i.ibb.co/yfNt5nB/411448682-309854522043982-1989379399852115592-n.jpg" alt="Logo Radio">
+            <h1>Vivva la Radio</h1>
+            <p id="nowPlaying">Transmitiendo en vivo</p>
+        </div>
+
+        <audio id="radioPlayer" src="	https://dominicanstream.com/proxy/vivalaradio/;" preload="none"></audio>
+
+        <div class="controls">
+            <button id="playPauseBtn" class="play-pause-btn" aria-label="Play/Pause">
+                <i class="fas fa-play"></i>
+            </button>
+            <div class="volume-control">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" id="volumeCtrl" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        </div>
+
+        <a href="https://wa.me/5491133925284" class="whatsapp-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        
+        <p id="installInstructions" style="display: none;">Para instalar, usa el menú de tu navegador y 'Añadir a pantalla de inicio' o 'Instalar aplicación'.</p>
+
+    </div>
+
+    <script>
+        const radioPlayer = document.getElementById('radioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playPauseIcon = playPauseBtn.querySelector('i');
+        const volumeCtrl = document.getElementById('volumeCtrl');
+        const nowPlaying = document.getElementById('nowPlaying');
+        const playerContainer = document.querySelector('.player-container'); 
+        
+        const PLACEHOLDER_AUDIO_URL = "https://stream.example.com/placeholder-vivva-la-radio";
+
+        playPauseBtn.addEventListener('click', () => {
+            const currentAudioSrc = radioPlayer.getAttribute('src');
+            if (currentAudioSrc === PLACEHOLDER_AUDIO_URL || currentAudioSrc === "" || currentAudioSrc === null) {
+                 nowPlaying.textContent = "URL de transmisión no configurada!";
+                 alert("Por favor, configura la URL de transmisión de la radio en el código HTML (index.html), reemplazando:\n" + PLACEHOLDER_AUDIO_URL);
+                 playerContainer.classList.remove('loading-state');
+                 return;
+            }
+
+            if (radioPlayer.paused || radioPlayer.ended) {
+                radioPlayer.play().catch(error => {
+                    console.error("Error al intentar reproducir:", error);
+                    nowPlaying.textContent = "Error al cargar stream";
+                    playerContainer.classList.remove('loading-state');
+                });
+            } else {
+                radioPlayer.pause();
+            }
+        });
+
+        radioPlayer.addEventListener('play', () => {
+            playPauseIcon.classList.remove('fa-play');
+            playPauseIcon.classList.add('fa-pause');
+            nowPlaying.textContent = "Transmitiendo en vivo...";
+            playerContainer.classList.remove('loading-state');
+        });
+
+        radioPlayer.addEventListener('pause', () => {
+            playPauseIcon.classList.remove('fa-pause');
+            playPauseIcon.classList.add('fa-play');
+            // Only update to "En pausa" if not due to an error or unconfigured URL
+            if (radioPlayer.readyState >= 2 && !radioPlayer.error && radioPlayer.getAttribute('src') !== PLACEHOLDER_AUDIO_URL) { 
+                 nowPlaying.textContent = "En pausa";
+            }
+            playerContainer.classList.remove('loading-state');
+        });
+        
+        radioPlayer.addEventListener('waiting', () => {
+            if (radioPlayer.getAttribute('src') !== PLACEHOLDER_AUDIO_URL) {
+                nowPlaying.textContent = "Cargando...";
+                playerContainer.classList.add('loading-state');
+            }
+        });
+        
+        radioPlayer.addEventListener('stalled', () => {
+            if (radioPlayer.getAttribute('src') !== PLACEHOLDER_AUDIO_URL) {
+                nowPlaying.textContent = "Stream detenido, reintentando...";
+                playerContainer.classList.add('loading-state');
+            }
+        });
+
+        radioPlayer.addEventListener('error', (e) => {
+            console.error("Error en el reproductor de audio:", e);
+            let errorMessage = "Error de transmisión";
+            if (radioPlayer.getAttribute('src') === PLACEHOLDER_AUDIO_URL) {
+                 errorMessage = "URL no configurada";
+                 // This case should ideally be caught by the playPauseBtn click handler first.
+            } else if (radioPlayer.error) {
+                switch (radioPlayer.error.code) {
+                    case MediaError.MEDIA_ERR_ABORTED:
+                        errorMessage = 'Reproducción abortada.';
+                        break;
+                    case MediaError.MEDIA_ERR_NETWORK:
+                        errorMessage = 'Error de red. Verifica la URL.';
+                        break;
+                    case MediaError.MEDIA_ERR_DECODE:
+                        errorMessage = 'Error de decodificación. Stream corrupto?';
+                        break;
+                    case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                        errorMessage = 'Formato no soportado o URL inválida.';
+                        break;
+                    default:
+                        errorMessage = 'Error desconocido de audio.';
+                        break;
+                }
+            }
+            nowPlaying.textContent = errorMessage;
+            playPauseIcon.classList.remove('fa-pause');
+            playPauseIcon.classList.add('fa-play');
+            playerContainer.classList.remove('loading-state');
+        });
+
+
+        volumeCtrl.addEventListener('input', () => {
+            radioPlayer.volume = volumeCtrl.value;
+        });
+        
+        // Set initial volume
+        radioPlayer.volume = volumeCtrl.value;
+
+        // Initialize text content based on initial state
+        if (radioPlayer.getAttribute('src') === PLACEHOLDER_AUDIO_URL) {
+            nowPlaying.textContent = "Configura el stream de audio.";
+        } else {
+            nowPlaying.textContent = "Lista para transmitir";
+        }
+
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+        
+        let deferredPrompt;
+        const installInstructions = document.getElementById('installInstructions');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installInstructions) installInstructions.style.display = 'block';
+            console.log('`beforeinstallprompt` event was fired.');
+        });
+    </script>
+
+<div class="social-sidebar">
+    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://telegram.org" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+    <a href="https://wa.me/5491133925284" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+</body>
+</html>
