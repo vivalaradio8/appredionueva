@@ -426,33 +426,40 @@
     <a href="https://t.me/vivalaradioonline" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
     
 </div>
+<!-- (Tu <html>, <head> y todo el contenido original sigue igual hasta aquí) -->
+
+<!-- AGREGADO: Pantalla de bienvenida con redirección -->
+<div id="pantalla-bienvenida" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 1.2em; text-align: center;">
+  <div id="contador">Esta radio está unida a <strong style='color: #ffeb3b;'>Radios Gospel Unidas</strong> (5s)</div>
+</div>
+
 <script>
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
+  window.onload = function () {
+    let segundos = 5;
+    const contador = document.getElementById('contador');
 
-  // Ocultar el botón por defecto
-  installBtn.style.display = 'none';
-
-  // Esperar a que el navegador dispare el evento
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'block';
-
-    installBtn.addEventListener('click', () => {
-      installBtn.style.display = 'none';
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('✅ Usuario instaló la app');
-        } else {
-          console.log('❌ Usuario canceló la instalación');
+    const intervalo = setInterval(() => {
+      segundos--;
+      contador.innerHTML = `Esta radio está unida a <strong style='color: #ffeb3b;'>Radios Gospel Unidas</strong> (${segundos}s)`;
+      if (segundos === 0) {
+        clearInterval(intervalo);
+        const bienvenida = document.getElementById('pantalla-bienvenida');
+        if (bienvenida) {
+          bienvenida.style.transition = "opacity 1s ease";
+          bienvenida.style.opacity = "0";
+          setTimeout(() => {
+            bienvenida.remove();
+            window.location.href = "https://appredionueva-nh6o.vercel.app/";
+          }, 1000);
         }
-        deferredPrompt = null;
-      });
-    });
-  });
+      }
+    }, 1000);
+  };
 </script>
+<!-- FIN DEL AGREGADO -->
+
+<!-- Continúa tu HTML como ya estaba, incluyendo </body> y </html> -->
+
 
 </body>
 </html>
