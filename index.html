@@ -227,8 +227,38 @@
 }
 
 </style>
+<script>
+  let eventoInstalacion;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    eventoInstalacion = e;
+
+    const boton = document.getElementById('installBtn');
+    boton.style.display = 'block';
+
+    boton.addEventListener('click', () => {
+      boton.style.display = 'none';
+      eventoInstalacion.prompt();
+
+      eventoInstalacion.userChoice.then((respuesta) => {
+        if (respuesta.outcome === 'accepted') {
+          console.log('Instaló la app');
+        } else {
+          console.log('No quiso instalar');
+        }
+        eventoInstalacion = null;
+      });
+    });
+  });
+</script>
+
 </head>
 <body>
+<button id="installBtn" style="display: none; position: fixed; bottom: 20px; right: 20px; padding: 10px; background: green; color: white; border: none; border-radius: 10px;">
+  📲 Instalar la App
+</button>
+
     <div class="player-container">
         <div class="station-info">
             <img class="logo-central" src="https://i.ibb.co/yfNt5nB/411448682-309854522043982-1989379399852115592-n.jpg" alt="Logo Radio">
@@ -394,7 +424,7 @@
     <a href="https://www.youtube.com/@vivalaradio" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://www.tiktok.com/@viva.la.radioonline" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
     <a href="https://t.me/vivalaradioonline" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
-    <a href="https://wa.me/5491133925284" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    
 </div>
 
 </body>
