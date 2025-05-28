@@ -426,6 +426,33 @@
     <a href="https://t.me/vivalaradioonline" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
     
 </div>
+<script>
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+
+  // Ocultar el botón por defecto
+  installBtn.style.display = 'none';
+
+  // Esperar a que el navegador dispare el evento
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'block';
+
+    installBtn.addEventListener('click', () => {
+      installBtn.style.display = 'none';
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('✅ Usuario instaló la app');
+        } else {
+          console.log('❌ Usuario canceló la instalación');
+        }
+        deferredPrompt = null;
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
