@@ -434,14 +434,18 @@
 </div>
 
 <div id="pantalla-bienvenida" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 1.2em; text-align: center;">
+  <div id="contador">somos parte de <strong style='color: #ffeb3b;'>Radios Gospel Unidas</strong> (5s)</div>
+</div>
+<div id="pantalla-bienvenida" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 1.2em; text-align: center;">
   <div id="contador">Esta radio está unida a <strong style='color: #ffeb3b;'>Radios Gospel Unidas</strong> (5s)</div>
 </div>
+
 <script>
   window.onload = function () {
-    // Si ya se mostró antes, no redirigir
+    const bienvenida = document.getElementById('pantalla-bienvenida');
+
     if (localStorage.getItem("mensajeMostrado") === "true") {
-      const bienvenida = document.getElementById('pantalla-bienvenida');
-      if (bienvenida) bienvenida.remove();
+      if (bienvenida) bienvenida.remove(); // Oculta el mensaje si ya se mostró
       return;
     }
 
@@ -450,16 +454,15 @@
 
     const intervalo = setInterval(() => {
       segundos--;
-      contador.innerHTML = `SOMOS PARTE DE <strong style='color: #ffeb3b;'>Radios Gospel Unidas</strong> (${segundos}s)`;
+      contador.innerHTML = `somos parte de <strong style='color: #ffeb3b;'>Radios Gospel Unidas</strong> (${segundos}s)`;
       if (segundos === 0) {
         clearInterval(intervalo);
-        const bienvenida = document.getElementById('pantalla-bienvenida');
         if (bienvenida) {
           bienvenida.style.transition = "opacity 1s ease";
           bienvenida.style.opacity = "0";
           setTimeout(() => {
             bienvenida.remove();
-            localStorage.setItem("mensajeMostrado", "true"); // Marcar como mostrado
+            localStorage.setItem("mensajeMostrado", "true");
             window.location.href = "https://appredionueva-nh6o.vercel.app/";
           }, 1000);
         }
@@ -467,6 +470,7 @@
     }, 1000);
   };
 </script>
+
 
 </body>
 </html>
