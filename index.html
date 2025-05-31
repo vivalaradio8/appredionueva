@@ -429,37 +429,7 @@
   📲 Descarga la app
 </a>
 
-<style>
-  #install-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #8A2BE2; /* violeta */
-    color: white;
-    padding: 16px 28px;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 6px 12px rgba(138, 43, 226, 0.7);
-    z-index: 10000;
-    opacity: 1;
-    transition: opacity 1s ease;
-  }
-</style>
 
-<script>
-  // Ocultar el botón después de 10 segundos
-  setTimeout(() => {
-    const popup = document.getElementById('install-popup');
-    popup.style.opacity = '0';
-    // Opcional: también ocultarlo después de la transición
-    setTimeout(() => {
-      popup.style.display = 'none';
-    }, 1000);
-  }, 10000);
-</script>
 
 </body>
 </html>
