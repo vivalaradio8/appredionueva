@@ -198,15 +198,23 @@
     box-shadow: 0 0 10px rgba(127, 0, 255, 0.6);
 }
 
-.social-sidebar {
-    position: fixed;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+.social-sidebar a {
+    background-color: #7F00FF;
+    color: white;
+    width: 48px;
+    height: 48px;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Elimina el padding anterior */
+    border-radius: 50%;
+    font-size: 1.3em;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 8px rgba(127, 0, 255, 0.4);
+
+
 }
 
 .social-sidebar a {
