@@ -234,6 +234,35 @@
     transform: scale(1.1);
 }
 
+
+        .social-icons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .social-icons a {
+            background-color: #7F00FF;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 1em;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 0 5px rgba(127, 0, 255, 0.4);
+        }
+
+        .social-icons a:hover {
+            background-color: #6A0DAD;
+            transform: scale(1.1);
+        }
+
 </style>
 <script>
   let eventoInstalacion;
@@ -285,6 +314,15 @@
                 <input type="range" id="volumeCtrl" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
                 <i class="fas fa-volume-up"></i>
             </div>
+        </div>
+
+        
+        <div class="social-icons">
+            <a href="https://www.facebook.com/Vivalaradio.argentina" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/viva.laradio_online/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@vivalaradio" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.tiktok.com/@viva.la.radioonline" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://t.me/vivalaradioonline" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
         </div>
 
         <a href="https://wa.me/5491133925284" class="whatsapp-link" target="_blank" rel="noopener noreferrer">
@@ -425,19 +463,6 @@
             console.log('`beforeinstallprompt` event was fired.');
         });
     </script>
-
-<div class="social-sidebar">
-    <a href="https://www.facebook.com/Vivalaradio.argentina" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/viva.laradio_online/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.youtube.com/@vivalaradio" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@viva.la.radioonline" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://t.me/vivalaradioonline" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
-   <!-- Botón centrado -->
-<a href="https://appredionueva-nh6o.vercel.app/" target="_blank" id="install-popup">
-  📲 Descarga la app
-</a>
-
-
 
 </body>
 </html>
